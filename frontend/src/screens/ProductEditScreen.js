@@ -85,7 +85,7 @@ function ProductEditScreen({ match, history }) {
       };
 
       const { data } = await axios.post(
-        "/api/products/upload/",
+        "https://da7ye.pythonanywhere.com/api/products/upload/",
         formData,
         config
       );
