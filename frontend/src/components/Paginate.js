@@ -1,40 +1,29 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
-/* REACT BOOTSTRAP */
-import { Pagination } from "react-bootstrap";
+function Paginate({ pages, page, keyword = "", isAdmin = false }) {
+  if (pages <= 1) return null;
 
-/* REACT ROUTER BOOTSTRAP */
-import { LinkContainer } from "react-router-bootstrap";
-
-function Paginate({ page, pages, keyword = "", isAdmin = false }) {
-  /* isAdmin IS SET TO FALSE BY DEFAULT, ONLY IN ADMIN ProductList PAGE IS WILL BE SET TO TRUE */
-
-  if (keyword) {
-    keyword = keyword.split("?keyword=")[1].split("&")[0];
-  }
-
-  /* 
-  console.log("KEYWORD", keyword);
-  output: ?keyword=iPhone&page=1 => iPhone&page=1 => iPhone
-  */
+  const basePath = isAdmin ? "/admin/productlist/" : "/";
 
   return (
-    pages > 1 && (
-      <Pagination>
-        {[...Array(pages).keys()].map((x) => (
-          <LinkContainer
-            key={x + 1}
-            to={
-              !isAdmin
-                ? `/?keyword=${keyword}&page=${x + 1}`
-                : `/admin/productlist//?keyword=${keyword}&page=${x + 1}`
-            }
-          >
-            <Pagination.Item active={x + 1 === page}>{x + 1}</Pagination.Item>
-          </LinkContainer>
-        ))}
-      </Pagination>
-    )
+    <div className="flex items-center justify-center gap-2">
+      {[...Array(pages).keys()].map((x) => (
+        <Link
+          key={x + 1}
+          to={`${basePath}?keyword=${keyword.split("?keyword=")[1] || ""}&page=${
+            x + 1
+          }`}
+          className={`w-10 h-10 flex items-center justify-center rounded-lg text-sm font-medium transition-all duration-200 ${
+            x + 1 === page
+              ? "bg-zinc-900 text-white shadow-md"
+              : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
+          }`}
+        >
+          {x + 1}
+        </Link>
+      ))}
+    </div>
   );
 }
 

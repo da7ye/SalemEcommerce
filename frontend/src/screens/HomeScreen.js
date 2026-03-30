@@ -1,33 +1,21 @@
 import React, { useEffect } from "react";
-
-/* REACT-BOOTSTRAP */
-import { Row, Col } from "react-bootstrap";
-
-/* COMPONENTS */
+import { useDispatch, useSelector } from "react-redux";
 import Product from "../components/Product";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import Paginate from "../components/Paginate";
 import ProductCarousel from "../components/ProductCarousel";
-
-/* REACT - REDUX */
-import { useDispatch, useSelector } from "react-redux";
-
-/* ACTION CREATORS */
 import { listProducts } from "../actions/productActions";
+import { useLanguage } from "../i18/LanguageContext";
 
 function HomeScreen({ history }) {
   const dispatch = useDispatch();
+  const { t } = useLanguage();
 
-  /* PULLING A PART OF STATE FROM THE ACTUAL STATE IN THE REDUX STORE */
   const productList = useSelector((state) => state.productList);
   const { products, page, pages, loading, error } = productList;
 
-  /* FIRING OFF THE ACTION CREATORS USING DISPATCH */
-
-  let keyword =
-    history.location
-      .search; /* IF USER SEARCHES FOR ANYTHING THEN THIS KEYWORD CHANGES AND USE EFFECT GETS TRIGGERED */
+  let keyword = history.location.search;
 
   useEffect(() => {
     dispatch(listProducts(keyword));
@@ -37,7 +25,13 @@ function HomeScreen({ history }) {
     <div>
       {!keyword && <ProductCarousel />}
 
-      <h1>Latest Products</h1>
+      {/* Section Header */}
+      <div className="mb-8 mt-4">
+        <h1 className="text-2xl font-bold text-zinc-900 tracking-tight">
+          {keyword ? t("home.searchResults") : t("home.latestProducts")}
+        </h1>
+        <div className="mt-2 h-1 w-12 bg-amber-500 rounded-full"></div>
+      </div>
 
       {loading ? (
         <Loader />
@@ -45,17 +39,17 @@ function HomeScreen({ history }) {
         <Message variant="danger">{error}</Message>
       ) : (
         <div>
-          <Row>
-            {products.map((product) => {
-              return (
-                <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-                  <Product product={product} />
-                </Col>
-              );
-            })}
-          </Row>
+          {/* Product Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {products.map((product) => (
+              <Product key={product._id} product={product} />
+            ))}
+          </div>
 
-          <Paginate page={page} pages={pages} keyword={keyword} />
+          {/* Pagination */}
+          <div className="mt-10">
+            <Paginate page={page} pages={pages} keyword={keyword} />
+          </div>
         </div>
       )}
     </div>

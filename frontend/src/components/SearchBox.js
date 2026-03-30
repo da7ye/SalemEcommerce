@@ -1,44 +1,46 @@
 import React, { useState } from "react";
-
-/* REACT BOOTSTRAP */
-import { Button, Form } from "react-bootstrap";
-
-/* REACT ROUTER DOM */
 import { useHistory } from "react-router-dom";
+import { useLanguage } from "../i18/LanguageContext";
 
 function SearchBox() {
-  /* STATE */
   const [keyword, setKeyword] = useState("");
+  const history = useHistory();
+  const { t } = useLanguage();
 
-  let history =
-    useHistory(); /* CAN'T DIRECTLY USE HISTORY AS IT'S NOT AN ACTUAL PAGE SO CAN'T DESTRUCTURE PROPS */
-
-  /* HANDLER */
   const submitHandler = (e) => {
     e.preventDefault();
-
-    // WHEN USER HITS SUBMIT, REDIRECT TO HOME PAGE TO SEE PRODUCTS AND APPEND ?keyword=...IN URL
     if (keyword) {
       history.push(`/?keyword=${keyword}&page=1`);
     } else {
-      // IF WE HIT SUBMIT WITHOUT KEYWORD, WE DON'T WANT THE USER TO GET REDIRECTED IN THAT CASE RATHER STAY ON WHATEVER PAGE HE WAS
-      history.push(history.push(history.location.pathname));
+      history.push(history.location.pathname);
     }
   };
 
   return (
-    <Form onSubmit={submitHandler} className="d-flex">
-      <Form.Control
-        type="text"
-        name="q"
-        onChange={(e) => setKeyword(e.target.value)}
-        className="mr-sm-2 ml-sm-5"
-      ></Form.Control>
-
-      <Button type="submit" variant="outline-success" className="p-2 mx-sm-2">
-        Search
-      </Button>
-    </Form>
+    <form onSubmit={submitHandler} className="w-full">
+      <div className="relative">
+        <svg
+          className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+          />
+        </svg>
+        <input
+          type="text"
+          placeholder={t("header.searchPlaceholder")}
+          value={keyword}
+          onChange={(e) => setKeyword(e.target.value)}
+          className="w-full ps-10 pe-4 py-2 rounded-xl bg-zinc-800 border border-zinc-700 text-sm text-white placeholder-zinc-500 outline-none transition-all duration-200 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20"
+        />
+      </div>
+    </form>
   );
 }
 

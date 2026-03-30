@@ -1,95 +1,106 @@
 import React, { useState, useEffect } from "react";
-
-/* REACT ROUTER */
 import { Link } from "react-router-dom";
-
-/* REACT BOOTSTRAP */
-import { Row, Col, Button, Form } from "react-bootstrap";
-
-/* COMPONENTS */
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../actions/userActions";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
-import FormContainer from "../components/FormContainer";
-
-/* REACT - REDUX */
-import { useDispatch, useSelector } from "react-redux";
-
-/* ACTION CREATORS */
-import { login } from "../actions/userActions";
+import { useLanguage } from "../i18/LanguageContext";
 
 function LoginScreen({ location, history }) {
-  /* STATE */
   const [email, setEmail] = useState("");
-  const [password, setpassword] = useState("");
+  const [password, setPassword] = useState("");
+  const { t } = useLanguage();
 
   const dispatch = useDispatch();
 
-  /* SETTING UP REDIRECT */
   const redirect = location.search ? location.search.split("=")[1] : "/";
 
-  /* PULLING A PART OF STATE FROM THE ACTUAL STATE IN THE REDUX STORE */
   const userLogin = useSelector((state) => state.userLogin);
-
   const { userInfo, loading, error } = userLogin;
 
-  /* REDIRECTING AN ALREADY LOGGED IN USER, AS WE DON'T WANT THEM TO SEE THE LOGIN PAGE */
   useEffect(() => {
     if (userInfo) {
       history.push(redirect);
     }
   }, [history, userInfo, redirect]);
 
-  /* HANDLERS */
-
   const submitHandler = (e) => {
     e.preventDefault();
-
-    /* FIRING OFF THE ACTION CREATORS USING DISPATCH FOR LOGIN */
     dispatch(login(email, password));
   };
 
   return (
-    <FormContainer>
-      <h1>Sign In</h1>
+    <div className="min-h-[80vh] flex items-center justify-center px-4">
+      <div className="w-full max-w-md">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-zinc-900 tracking-tight">
+            {t("login.welcomeBack")}
+          </h1>
+          <p className="mt-2 text-zinc-500">
+            {t("login.signInSubtitle")}
+          </p>
+        </div>
 
-      {error && <Message variant="danger">{error}</Message>}
-      {loading && <Loader />}
+        {error && <Message variant="danger">{error}</Message>}
+        {loading && <Loader />}
 
-      <Form onSubmit={submitHandler}>
-        <Form.Group controlId="email">
-          <Form.Label>Email Address</Form.Label>
-          <Form.Control
-            type="email"
-            placeholder="Enter Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </Form.Group>
+        {/* Form */}
+        <form onSubmit={submitHandler} className="space-y-5">
+          <div>
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-zinc-700 mb-1.5"
+            >
+              {t("login.emailLabel")}
+            </label>
+            <input
+              id="email"
+              type="email"
+              placeholder={t("login.emailPlaceholder")}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-4 py-3 rounded-xl border border-zinc-200 bg-zinc-50/50 text-zinc-900 placeholder-zinc-400 outline-none transition-all duration-200 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 focus:bg-white"
+            />
+          </div>
 
-        <Form.Group controlId="password">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Enter Password"
-            value={password}
-            onChange={(e) => setpassword(e.target.value)}
-          />
-        </Form.Group>
+          <div>
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-zinc-700 mb-1.5"
+            >
+              {t("login.passwordLabel")}
+            </label>
+            <input
+              id="password"
+              type="password"
+              placeholder={t("login.passwordPlaceholder")}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-4 py-3 rounded-xl border border-zinc-200 bg-zinc-50/50 text-zinc-900 placeholder-zinc-400 outline-none transition-all duration-200 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 focus:bg-white"
+            />
+          </div>
 
-        <Button type="submit" variant="primary" className="mt-3">
-          Sign In
-        </Button>
-      </Form>
+          <button
+            type="submit"
+            className="w-full py-3 px-4 bg-zinc-900 hover:bg-zinc-800 text-white font-semibold rounded-xl transition-all duration-200 active:scale-[0.98] shadow-lg shadow-zinc-900/20"
+          >
+            {t("login.signInButton")}
+          </button>
+        </form>
 
-      <Row className="py-3">
-        <Col>
-          New Customer ?{" "}
-          <Link to={redirect ? `/register?redirect=${redirect}` : "/register"}>
-            Register
+        {/* Footer */}
+        <p className="mt-8 text-center text-zinc-500">
+          {t("login.newHere")}{" "}
+          <Link
+            to={redirect ? `/register?redirect=${redirect}` : "/register"}
+            className="text-amber-600 hover:text-amber-700 font-semibold transition-colors"
+          >
+            {t("login.createAccount")}
           </Link>
-        </Col>
-      </Row>
-    </FormContainer>
+        </p>
+      </div>
+    </div>
   );
 }
 
