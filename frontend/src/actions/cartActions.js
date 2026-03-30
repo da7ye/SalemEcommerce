@@ -10,7 +10,7 @@ import {
 
 /* FOR ADDING PRODUCTS TO CART */
 export const addToCart = (id, qty) => async (dispatch, getState) => {
-  const { data } = await axios.get(`/api/products/${id}`);
+  const { data } = await axios.get(`https://da7ye.pythonanywhere.com/api/products/${id}`);
 
   dispatch({
     type: CART_ADD_ITEM,
