@@ -5,7 +5,7 @@ import Loader from "./Loader";
 import Message from "./Message";
 import { listTopProducts } from "../actions/productActions";
 import { useLanguage } from "../i18/LanguageContext";
-
+import { getImageUrl } from "../utils/imageUrl";
 function ProductCarousel() {
   const dispatch = useDispatch();
   const [current, setCurrent] = useState(0);
@@ -71,9 +71,7 @@ function ProductCarousel() {
           >
             {/* Image */}
             <img
-              src={product.image.startsWith('http') 
-  ? product.image 
-  : `https://da7ye.pythonanywhere.com${product.image}`}
+              src={getImageUrl(product.image)}
               alt={product.name}
               style={{
                 width: "100%",

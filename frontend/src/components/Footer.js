@@ -14,7 +14,7 @@ function Footer() {
           <div className="sm:col-span-2 lg:col-span-1">
             <Link to="/" className="flex items-center gap-3 mb-4">
               <img
-                src="/static/images/logo-sal.png"
+                src="/images/logo-sal.png"
                 alt={t("footer.brand")}
                 className="w-12 h-12  rounded-lg object-contain drop-shadow-[0_0_6px_rgba(245,158,11,0.4)]"
               />

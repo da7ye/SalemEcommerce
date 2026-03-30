@@ -67,7 +67,7 @@ function Header() {
             onClick={() => setMobileOpen(false)}
           >
             <img
-              src="/static/images/logo-sal.png"
+              src="/images/logo-sal.png"
               alt={t("header.brand")}
               className="w-11  rounded-lg h-11 object-contain drop-shadow-[0_0_6px_rgba(245,158,11,0.4)]"
             />
