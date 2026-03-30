@@ -14,7 +14,9 @@ function Product({ product }) {
       {/* Image */}
       <div className="aspect-square overflow-hidden bg-zinc-50">
         <img
-          src={product.image}
+          src={product.image.startsWith('http') 
+  ? product.image 
+  : `https://da7ye.pythonanywhere.com${product.image}`}
           alt={product.name}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         />

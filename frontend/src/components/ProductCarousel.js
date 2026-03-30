@@ -71,7 +71,9 @@ function ProductCarousel() {
           >
             {/* Image */}
             <img
-              src={product.image}
+              src={product.image.startsWith('http') 
+  ? product.image 
+  : `https://da7ye.pythonanywhere.com${product.image}`}
               alt={product.name}
               style={{
                 width: "100%",

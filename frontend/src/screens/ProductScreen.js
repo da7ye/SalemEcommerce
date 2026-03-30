@@ -85,7 +85,9 @@ function ProductScreen({ match, history }) {
             <div className="lg:col-span-5">
               <div className="aspect-square rounded-2xl overflow-hidden bg-zinc-50 border border-zinc-100">
                 <img
-                  src={product.image}
+                  src={product.image.startsWith('http') 
+  ? product.image 
+  : `https://da7ye.pythonanywhere.com${product.image}`}
                   alt={product.name}
                   className="w-full h-full object-cover"
                 />
