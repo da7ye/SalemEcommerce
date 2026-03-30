@@ -26,7 +26,7 @@ import {
   PRODUCT_TOP_REQUEST,
 } from "../constants/productConstants";
 
-const CLOUD_BASE_URL = "https://da7ye.pythonanywhere.com/";;
+
 
 
 /* ACTION CREATOR USED IN HomeScreen COMPONENT */
